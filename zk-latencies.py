@@ -76,7 +76,10 @@ def print_elap(start, msg, count):
 def timer(ops, msg, count=options.znode_count):
     start = time.time()
     for op in ops:
+        s1 = time.time()
         pass
+        s2 = time.time()
+        print("%s %s" % (s1,s2)
     print_elap(start, msg, count)
 
 def child_path(i):
@@ -92,6 +95,12 @@ def synchronous_latency_test(s, data):
     timer((s.set(child_path(j), data)
            for j in xrange(options.znode_count)),
           "set     %7d           znodes " % (options.znode_count))
+
+    for j in xrange(options.znode_count)):
+        s1 = time.time()
+        s.set(child_path(j), data)
+        s2 = time.time()
+        print("%s %s" % (s1,s2)
 
     # get znode_count znodes
     timer((s.get(child_path(j))
