@@ -97,7 +97,7 @@ def synchronous_latency_test(s, data):
         s1 = time.time()
         s.set(child_path(j), data)
         s2 = time.time()
-        print("%s %s" % (s1,s2)
+        print("%s %s" % (s1,s2))
 
     # get znode_count znodes
     timer((s.get(child_path(j))
