@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime, time, os
+import datetime, time, os, csv
 from optparse import OptionParser
 
 import zkclient
@@ -93,11 +93,14 @@ def synchronous_latency_test(s, data):
            for j in xrange(options.znode_count)),
           "set     %7d           znodes " % (options.znode_count))
 
-    for j in xrange(options.znode_count):
-        s1 = time.time()
-        s.set(child_path(j), data)
-        s2 = time.time()
-        print("%s %s" % (s1,s2))
+    with open('latency_0.csv', 'wb') as f:
+        w = csv.writer(csvfile, delimiter=',',
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        for j in xrange(options.znode_count):
+            s1 = time.time()
+            s.set(child_path(j), data)
+            s2 = time.time()
+            w.writerow([s1,j,(s2-s1)*10**9,1])
 
     # get znode_count znodes
     timer((s.get(child_path(j))
