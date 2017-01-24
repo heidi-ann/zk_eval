@@ -93,7 +93,7 @@ def synchronous_latency_test(s, data):
            for j in xrange(options.znode_count)),
           "set     %7d           znodes " % (options.znode_count))
 
-    for j in xrange(options.znode_count)):
+    for j in xrange(options.znode_count):
         s1 = time.time()
         s.set(child_path(j), data)
         s2 = time.time()
