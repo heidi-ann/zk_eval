@@ -76,10 +76,7 @@ def print_elap(start, msg, count):
 def timer(ops, msg, count=options.znode_count):
     start = time.time()
     for op in ops:
-        s1 = time.time()
         pass
-        s2 = time.time()
-        print("%s %s" % (s1,s2)
     print_elap(start, msg, count)
 
 def child_path(i):
