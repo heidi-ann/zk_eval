@@ -82,18 +82,18 @@ def timer(ops, msg, count=options.znode_count):
 def child_path(i):
     return "%s/session_%d" % (options.root_znode, i)
 
-def synchronous_latency_test(s, data):
+def synchronous_latency_test(s, data, i):
     # create znode_count znodes (perm)
     timer((s.create(child_path(j), data)
            for j in xrange(options.znode_count)),
           "created %7d permanent znodes " % (options.znode_count))
 
-    # set znode_count znodes
-    timer((s.set(child_path(j), data)
-           for j in xrange(options.znode_count)),
-          "set     %7d           znodes " % (options.znode_count))
+    # # set znode_count znodes
+    # timer((s.set(child_path(j), data)
+    #        for j in xrange(options.znode_count)),
+    #       "set     %7d           znodes " % (options.znode_count))
 
-    with open('latency.csv', 'wb') as f:
+    with open('latency_%d.csv' % i, 'wb') as f:
         w = csv.writer(f, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
         for j in xrange(options.znode_count):
@@ -102,15 +102,15 @@ def synchronous_latency_test(s, data):
             s2 = time.time()
             w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1])
 
-    # get znode_count znodes
-    timer((s.get(child_path(j))
-           for j in xrange(options.znode_count)),
-          "get     %7d           znodes " % (options.znode_count))
-
-    # delete znode_count znodes
-    timer((s.delete(child_path(j))
-           for j in xrange(options.znode_count)),
-          "deleted %7d permanent znodes " % (options.znode_count))
+    # # get znode_count znodes
+    # timer((s.get(child_path(j))
+    #        for j in xrange(options.znode_count)),
+    #       "get     %7d           znodes " % (options.znode_count))
+    #
+    # # delete znode_count znodes
+    # timer((s.delete(child_path(j))
+    #        for j in xrange(options.znode_count)),
+    #       "deleted %7d permanent znodes " % (options.znode_count))
 
 
 def read_zk_config(filename):
@@ -158,7 +158,7 @@ if __name__ == '__main__':
     for i, s in enumerate(sessions):
         print("Testing latencies on server %s using %s calls" %
               (servers[i], type))
-        synchronous_latency_test(s, data)
+        synchronous_latency_test(s, data, i)
 
 
     sessions[0].delete(options.root_znode)
