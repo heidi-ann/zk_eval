@@ -93,14 +93,15 @@ def synchronous_latency_test(s, data, i):
     #        for j in xrange(options.znode_count)),
     #       "set     %7d           znodes " % (options.znode_count))
 
-    with open('latency_%d.csv' % i, 'wb') as f:
-        w = csv.writer(f, delimiter=',',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        for j in xrange(options.znode_count):
-            s1 = time.time()
-            s.set(child_path(j), data)
-            s2 = time.time()
-            w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1])
+    if i==0:
+        with open('latency.csv', 'wb') as f:
+            w = csv.writer(f, delimiter=',',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            for j in xrange(options.znode_count):
+                s1 = time.time()
+                s.set(child_path(j), data)
+                s2 = time.time()
+                w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1])
 
     # # get znode_count znodes
     # timer((s.get(child_path(j))
