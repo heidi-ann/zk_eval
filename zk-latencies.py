@@ -93,25 +93,24 @@ def synchronous_latency_test(s, data, i):
     #        for j in xrange(options.znode_count)),
     #       "set     %7d           znodes " % (options.znode_count))
 
-    if i==0:
-        with open('latency.csv', 'wb') as f:
-            w = csv.writer(f, delimiter=',',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            for j in xrange(options.znode_count):
-                s1 = time.time()
-                s.set(child_path(j), data)
-                s2 = time.time()
-                w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1])
+    with open('latency.csv', 'wb') as f:
+        w = csv.writer(f, delimiter=',',
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        for j in xrange(options.znode_count):
+            s1 = time.time()
+            s.set(child_path(j), data)
+            s2 = time.time()
+            w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1])
 
     # # get znode_count znodes
     # timer((s.get(child_path(j))
     #        for j in xrange(options.znode_count)),
     #       "get     %7d           znodes " % (options.znode_count))
     #
-    # # delete znode_count znodes
-    # timer((s.delete(child_path(j))
-    #        for j in xrange(options.znode_count)),
-    #       "deleted %7d permanent znodes " % (options.znode_count))
+    # delete znode_count znodes
+    timer((s.delete(child_path(j))
+           for j in xrange(options.znode_count)),
+          "deleted %7d permanent znodes " % (options.znode_count))
 
 
 def read_zk_config(filename):
@@ -157,9 +156,10 @@ if __name__ == '__main__':
                            (datetime.datetime.now().ctime()))
 
     for i, s in enumerate(sessions):
-        print("Testing latencies on server %s using %s calls" %
-              (servers[i], type))
-        synchronous_latency_test(s, data, i)
+        if i==0:
+            print("Testing latencies on server %s using %s calls" %
+                  (servers[i], type))
+            synchronous_latency_test(s, data, i)
 
 
     sessions[0].delete(options.root_znode)
