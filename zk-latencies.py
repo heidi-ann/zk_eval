@@ -41,6 +41,8 @@ parser.add_option("", "--znode_count", dest="znode_count", default=10000, type="
                   help="the number of znodes to operate on in each performance section (default %default)")
 parser.add_option("", "--watch_multiple", dest="watch_multiple", default=1, type="int",
                   help="number of watches to put on each znode (default %default)")
+parser.add_option("", "--csv", dest="csv_file", default="latency.csv",
+                  help="file to write the measurements to (default %default)")
 
 parser.add_option("", "--force",
                   action="store_true", dest="force", default=False,
@@ -93,7 +95,7 @@ def synchronous_latency_test(s, data, i):
     #        for j in xrange(options.znode_count)),
     #       "set     %7d           znodes " % (options.znode_count))
 
-    with open('latency.csv', 'wb') as f:
+    with open(options.csv_file, 'wb') as f:
         w = csv.writer(f, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
         for j in xrange(options.znode_count):
