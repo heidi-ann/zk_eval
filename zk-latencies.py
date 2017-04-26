@@ -103,17 +103,17 @@ def synchronous_latency_test(s, data, i):
             s.set(child_path(j), data)
             s2 = time.time()
             w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1,"write"])
-        for j in xrange(options.znode_count):
-            s1 = time.time()
-            s.get(child_path(j))
-            s2 = time.time()
-            w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1,"read"])
-        for j in xrange(options.znode_count):
-            s1 = time.time()
-            s.async(child_path(j))
-            s.get(child_path(j))
-            s2 = time.time()
-            w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1,"sync-read"])
+        # for j in xrange(options.znode_count):
+        #     s1 = time.time()
+        #     s.get(child_path(j))
+        #     s2 = time.time()
+        #     w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1,"read"])
+        # for j in xrange(options.znode_count):
+        #     s1 = time.time()
+        #     s.async(child_path(j))
+        #     s.get(child_path(j))
+        #     s2 = time.time()
+        #     w.writerow([int(s1*(10**9)),j,int((s2-s1)*10**9),1,"sync-read"])
 
     # # get znode_count znodes
     # timer((s.get(child_path(j))
